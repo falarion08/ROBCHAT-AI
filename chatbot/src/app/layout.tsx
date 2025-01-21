@@ -5,6 +5,8 @@ import "./globals.css";
 import { poppins, sf_pro } from "@/utils/fonts";
 import customTheme from "@/utils/customTheme";
 import { Flowbite } from "flowbite-react";
+import retrieve from "./lib/userInfoRetriever";
+import { useState } from "react";
 
 
 export const metadata: Metadata = {
@@ -20,17 +22,18 @@ export const viewport: Viewport = {
 
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
-      <body className={`${sf_pro.variable} ${poppins.variable} bg-gray-800 antialiased text-white`}>
+      <body className={`${sf_pro.variable} ${poppins.variable} h-[91vh] overflow-hidden bg-gray-800 antialiased text-white`}>
         
         <Flowbite theme={{ theme: customTheme }}>
-          <TopNavigationBar />
+          <TopNavigationBar userInfo ={await retrieve()}/>
           {children}
         </Flowbite>
 

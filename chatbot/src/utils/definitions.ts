@@ -16,3 +16,19 @@ export const RegistrationFormSchema = z.object({
     message: "Passwords don't match",
     path: ["confirm"], // path of error
   });
+
+export const LoginFormSchema = z.object({
+    email: z.string().email({message:"Invalid login details"}),
+    password: z.string().regex(new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?.!@$%^&*-]).{8,64}$"), {message:"Invalid login details"})
+
+})
+
+export type SessionPayload = {
+    userID: string,
+    expiresAt: Date
+}
+export type SessionInfo = {
+    email: any;
+    firstName: any;
+    lastName: any;
+} | undefined

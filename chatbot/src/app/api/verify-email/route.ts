@@ -41,7 +41,6 @@ export async function GET(request: Request) {
 
         }
 
-
         return NextResponse.json(
             { message: 'Invalid or expired token' },
             { status: 400 }
