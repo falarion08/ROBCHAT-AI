@@ -3,7 +3,7 @@ import { LoginFormSchema } from "@/utils/definitions";
 import { string } from "zod";
 import { cookies } from "next/headers";
 
-
+// Sanitize user input in the form
 export async function validateLogin(formData:FormData){
   
     const validationResult = LoginFormSchema.safeParse({
