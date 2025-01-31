@@ -32,3 +32,8 @@ export type SessionInfo = {
     firstName: any;
     lastName: any;
 } | undefined
+
+export type Message = {
+    userMessage:string,
+    systemMessage:string|undefined,
+}
