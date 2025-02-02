@@ -1,17 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react"
-
 export default function SideBar(props: any) {
-
-    const handleResize = () => {
-        if (window.innerWidth <= 640) {
-            props.setSideBarVisible(false);
-        }
-    }
-    useEffect(() => {
-        window.addEventListener("resize", handleResize)
-    }, [])
 
     return (
         <>

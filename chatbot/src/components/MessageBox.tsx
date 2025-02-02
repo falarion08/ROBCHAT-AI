@@ -1,11 +1,9 @@
 "use client";
-import { useContext, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { MessageRoomContext } from "@/app/Providers/messageRoomContext";
 import { Spinner } from "flowbite-react";
 import { Message } from "@/utils/definitions";
 import save from "@/app/lib/saveSession";
-import getBotResponse from "@/utils/getBotResponse";
-
 
 export default function MessageBox(props: any) {
 
@@ -18,7 +16,9 @@ export default function MessageBox(props: any) {
 
 
 
-    async function submitMessage() {
+    async function submitMessage(e:FormEvent) {
+
+        e.preventDefault();
 
         if (message.length > 0) {
             let messageExchange: Message = {
