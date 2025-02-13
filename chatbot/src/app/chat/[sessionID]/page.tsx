@@ -47,8 +47,8 @@ export default function Page() {
         if (isResponseLoading) {
           setIsChatBodyLoading(false);
           getData(messages[messages.length - 1].userMessage);
-          console.log("test");
 
+          
         }
     
       }, [isResponseLoading]);

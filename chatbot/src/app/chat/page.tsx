@@ -17,30 +17,31 @@ export default function Page() {
     setIsResponseLoading, isResponseLoading, isMessageThreadEmpty
   } = useContext(MessageRoomContext);
 
+  
+  useEffect(() => {
+
+    const getData = async (message: string) => {
+      const response = await getBotResponse(message)
+
+      let newMessages: Message[] = messages.map((m: Message, i: number) => {
+        if (i == messages.length - 1)
+          return { userMessage: m.userMessage, systemMessage: response };
+        else
+          return m;
+      })
+
+
+      setMessages(newMessages);
+      setIsResponseLoading(false);
+    }
+    if (!sessionExist && isResponseLoading) {
+      getData(messages[messages.length - 1].userMessage)
+    }
+
+  }, [isResponseLoading]);
+
+
   if (!sessionExist) {
-
-    useEffect(() => {
-
-      const getData = async (message: string) => {
-        const response = await getBotResponse(message)
-
-        let newMessages: Message[] = messages.map((m: Message, i: number) => {
-          if (i == messages.length - 1)
-            return { userMessage: m.userMessage, systemMessage: response };
-          else
-            return m;
-        })
-
-
-        setMessages(newMessages);
-        setIsResponseLoading(false);
-      }
-      if (isResponseLoading) {
-        getData(messages[messages.length - 1].userMessage)
-      }
-
-    }, [isResponseLoading]);
-
 
     return (<>
       {
