@@ -16,5 +16,4 @@ export interface User {
         isVerified:boolean, 
         verifyToken:string | null,
         verifyTokenExpire: number | null,
-        
 }

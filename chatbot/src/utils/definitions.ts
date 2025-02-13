@@ -35,5 +35,5 @@ export type SessionInfo = {
 
 export type Message = {
     userMessage:string,
-    systemMessage:string|undefined,
+    systemMessage?:string,
 }

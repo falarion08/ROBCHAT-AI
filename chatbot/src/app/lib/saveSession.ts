@@ -2,21 +2,33 @@
 
 import { cookies } from "next/headers";
 import { decrypt } from "./session";
+import storeMessage from "./storeMessage";
+import { collection, addDoc } from "@firebase/firestore";
+import { firestore } from "../../../dbconfig";
+import { redirect } from "next/navigation";
 
 /*
     This function stores saves the message history on the database. 
 */
 
-export default async function save(chatID:string = '') {
+export default async function createChatSessionID(message: string, pathname: string) {
 
-    
-        const cookie = cookies().get('session')?.value;
-        const session = await decrypt(cookie); 
+
+    const cookie = cookies().get('session')?.value;
+    const session = await decrypt(cookie);
+
+    if (session?.userID && pathname === "/chat") {
+
         
-        // if(session?.userID){
-        //     chatID = String(await storeMessage(message,botResponse, chatID));
-        // }
-    
-    return chatID;
+        const sessionRef = collection(firestore, `Users/${String(session?.userID)}/messageHistory/`);
+        const newSession = {
+            createdAt: Date.now(),
+            summary: message
+        }
+        const sessionDocRef = await addDoc(sessionRef, newSession);
+
+        redirect(`/chat/${sessionDocRef.id}`,)
+
+    }
 
 }

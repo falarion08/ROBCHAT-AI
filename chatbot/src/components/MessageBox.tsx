@@ -3,12 +3,16 @@ import { FormEvent, useContext, useState } from "react";
 import { MessageRoomContext } from "@/app/Providers/messageRoomContext";
 import { Spinner } from "flowbite-react";
 import { Message } from "@/utils/definitions";
-import save from "@/app/lib/saveSession";
+import createChatSessionID from "@/app/lib/saveSession";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function MessageBox(props: any) {
 
+    const pathname = usePathname();
+
+
     const { messages, setMessages,
-        setSessionID,
+        sessionExist,
         message, setMessage,
         isResponseLoading, setIsResponseLoading,
         setIsMessageThreadEmpty
@@ -16,26 +20,24 @@ export default function MessageBox(props: any) {
 
 
 
-    async function submitMessage(e:FormEvent) {
+    async function submitMessage(e: FormEvent) {
 
         e.preventDefault();
 
         if (message.length > 0) {
+
+            if (sessionExist) {
+                await createChatSessionID(message, pathname);
+            }
             let messageExchange: Message = {
                 userMessage: message,
-                systemMessage:undefined 
+                systemMessage: undefined
             }
             setMessages([...messages, messageExchange])
 
             setIsResponseLoading(true);
             setIsMessageThreadEmpty(false);
 
-            // Send a message to Chatbot
-            const sessionID = await save(message);
-
-            // Store message from user and the response from the bot
-
-            setSessionID(sessionID);
 
             // Clear out message box for new input
             setMessage('');

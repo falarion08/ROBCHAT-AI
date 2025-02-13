@@ -5,6 +5,10 @@ import getBotResponse from "@/utils/getBotResponse";
 import { Message } from "@/utils/definitions";
 import { useEffect, useState } from "react";
 import { MessageRoomContext } from "../Providers/messageRoomContext";
+import MessageThread from "@/components/MessageThread";
+import MessageBox from "@/components/MessageBox";
+import isSessionValid from "../lib/isSessionValid";
+import { usePathname } from "next/navigation";
 
 
 
@@ -15,14 +19,15 @@ export default function Layout({
 }) {
 
   const [sideBarVisible, setSideBarVisible] = useState<boolean | undefined>(undefined);
-  const [isLoaded, setIsLoaded] = useState<boolean>(true);
-
+  const [isMainBodyLoading, setIsMainBodyingLoading] = useState<boolean>(true);
   const [messages, setMessages] = useState<Message[]>([]);
   const [sessionID, setSessionID] = useState<string | undefined>();
   const [message, setMessage] = useState<string>("");
   const [isResponseLoading, setIsResponseLoading] = useState<boolean>(false);
   const [isMessageThreadEmpty, setIsMessageThreadEmpty] = useState<boolean>(true);
+  const [sessionExist, setSessionExist] = useState<boolean>(true);
 
+  const pathname = usePathname();
   const handleResize = () => {
     if (window.innerWidth <= 640) {
       setSideBarVisible(false);
@@ -31,53 +36,41 @@ export default function Layout({
 
   useEffect(() => {
 
-    setSideBarVisible(window.innerWidth <= 640 ? false : true);
-    setIsLoaded(true);
-    window.addEventListener("resize", handleResize);
+    async function examineSession() {
+      let sessionValid = await isSessionValid();
+      setSessionExist(sessionValid);
 
-  }, [])
-
-
-
-  useEffect(() => {
-
-    const getData = async (message: string) => {
-      const response = await getBotResponse(message)
-
-      let newMessages: Message[] = messages.map((m, i) => {
-        if (i == messages.length - 1)
-          return { userMessage: m.userMessage, systemMessage: response };
-        else
-          return m;
-      })
-
-
-      setMessages(newMessages);
-      setIsResponseLoading(false);
     }
-    if (isResponseLoading)
-      getData(messages[messages.length - 1].userMessage)
 
-  }, [isResponseLoading]);
+    setSideBarVisible(window.innerWidth <= 640 ? false : true);
+    setIsMainBodyingLoading(false);
+    window.addEventListener("resize", handleResize);
+    examineSession();
+  }, []);
 
-
-
-
-
-  if (isLoaded)
+  if (!isMainBodyLoading)
     return (
       <>
         <MessageRoomContext.Provider value={{
           messages, setMessages,
-          sessionID,setSessionID,
+          sessionID, setSessionID,
           message, setMessage,
           isResponseLoading, setIsResponseLoading,
-          isMessageThreadEmpty,setIsMessageThreadEmpty
+          isMessageThreadEmpty, setIsMessageThreadEmpty,
+          sessionExist
         }}>
           <div className="relative">
-            <SideBar sideBarVisible={sideBarVisible} setSideBarVisible={setSideBarVisible} />
-            <div className={`${sideBarVisible && " transition-all sm:ml-56"}`}>
-              <div className="w-full">{children}</div>
+            {sessionExist && <SideBar sideBarVisible={sideBarVisible} setSideBarVisible={setSideBarVisible} />}
+            {sideBarVisible && <div onClick={() => setSideBarVisible(false)} className="max-sm:fixed max-sm:inset-0 max-sm:bg-black opac max-sm:opacity-30 max-sm:z-10 border  sm:hidden" />}
+            <div className={`${sideBarVisible && sessionExist && " transition-all sm:ml-56"}`}>
+              <div className={`w-full  ${sideBarVisible && " max-sm:pointer-events-none"}`}>
+
+
+                <div className="h-[90vh] flex items-center flex-col ">
+                  {children}
+                  <MessageBox />
+                </div>
+              </div>
             </div>
 
           </div>
