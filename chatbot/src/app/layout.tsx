@@ -29,7 +29,7 @@ export default async function RootLayout({
 }>) {
   
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body className={`${sf_pro.variable} ${poppins.variable} h-[92vh] overflow-hidden bg-gray-800 antialiased text-white`}>
         
         <Flowbite theme={{ theme: customTheme }}>

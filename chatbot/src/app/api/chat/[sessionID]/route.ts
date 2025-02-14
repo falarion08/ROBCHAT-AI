@@ -39,9 +39,9 @@ export async function GET(request: Request, { params }: ParamsType) {
 export async function POST(request: Request, { params }: ParamsType){
     const { sessionID } = params;
 
-    let {userMessage, systemResponse} = await request.json()
-
     try{
+        let {userMessage, systemResponse} = await request.json()
+
         storeMessage(userMessage, systemResponse,sessionID);
         return NextResponse.json({status:200});
     } catch {

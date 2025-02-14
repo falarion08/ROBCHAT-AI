@@ -15,7 +15,7 @@ export default function MessageThread(props: any) {
 
     return (
         <>
-            <div className=" w-full flex flex-col">
+            <div className=" w-full flex flex-col" id="chat-body">
                 <div className=" block self-end bg-gray-700 p-2 rounded-lg max-w-lg  text-pretty break-words font-sfpro max-md:max-w-sm  max-sm:max-w-[200px]">
                     {exchange.userMessage}
                 </div>

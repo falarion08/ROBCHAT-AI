@@ -64,9 +64,7 @@ export default function Layout({
             {sideBarVisible && <div onClick={() => setSideBarVisible(false)} className="max-sm:fixed max-sm:inset-0 max-sm:bg-black opac max-sm:opacity-30 max-sm:z-10 border  sm:hidden" />}
             <div className={`${sideBarVisible && sessionExist && " transition-all sm:ml-56"}`}>
               <div className={`w-full  ${sideBarVisible && " max-sm:pointer-events-none"}`}>
-
-
-                <div className="h-[90vh] flex items-center flex-col ">
+                <div className="h-[90vh] flex items-center flex-col overscroll-none">
                   {children}
                   <MessageBox />
                 </div>
