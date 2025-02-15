@@ -6,6 +6,7 @@ import { Message } from "@/utils/definitions";
 import createChatSessionID from "@/app/lib/saveSession";
 import { usePathname, useRouter } from "next/navigation";
 
+
 export default function MessageBox(props: any) {
 
     const pathname = usePathname();
@@ -24,16 +25,24 @@ export default function MessageBox(props: any) {
 
         e.preventDefault();
 
+
         if (message.length > 0) {
 
             if (sessionExist) {
+
+
                 await createChatSessionID(message, pathname);
             }
             let messageExchange: Message = {
                 userMessage: message,
                 systemMessage: undefined
             }
-            setMessages([...messages, messageExchange])
+
+            if (pathname === '/chat') {
+                // clear on reset
+                setMessages([messageExchange])
+            }
+            else setMessages([...messages, messageExchange])
 
             setIsResponseLoading(true);
             setIsMessageThreadEmpty(false);

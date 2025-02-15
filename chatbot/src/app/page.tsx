@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { sf_pro } from "@/utils/fonts";
-import TopNavigationBar from "@/components/navigation/TopNavigationBar";
+import TopNavigationBar from "@/components/navigation/LandingTopNavigationBar";
 import { Jacques_Francois } from "next/font/google";
 import { useEffect, useState } from "react";
 import landingImage from "../../public/images/landing_image.svg";

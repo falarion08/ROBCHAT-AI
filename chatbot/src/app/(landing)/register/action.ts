@@ -1,6 +1,6 @@
 'use server';
 import { sendEmail } from "@/utils/sendEmail";
-import { firestore } from "../../../dbconfig";
+import { firestore } from "../../../../dbconfig";
 import { RegistrationFormSchema } from "@/utils/definitions";
 import { RegisterError, User } from "@/utils/types";
 import { collection, addDoc, where, query, onSnapshot, DocumentData, getDocs, doc, setDoc, updateDoc } from "@firebase/firestore"

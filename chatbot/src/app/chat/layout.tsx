@@ -9,6 +9,7 @@ import MessageThread from "@/components/MessageThread";
 import MessageBox from "@/components/MessageBox";
 import isSessionValid from "../lib/isSessionValid";
 import { usePathname } from "next/navigation";
+import DashboardTopNavigationBar from "@/components/navigation/DashboardTopNavBar";
 
 
 
@@ -62,7 +63,8 @@ export default function Layout({
           <div className="relative">
             {sessionExist && <SideBar sideBarVisible={sideBarVisible} setSideBarVisible={setSideBarVisible} />}
             {sideBarVisible && <div onClick={() => setSideBarVisible(false)} className="max-sm:fixed max-sm:inset-0 max-sm:bg-black opac max-sm:opacity-30 max-sm:z-10 border  sm:hidden" />}
-            <div className={`${sideBarVisible && sessionExist && " transition-all sm:ml-56"}`}>
+            <div className={`${sideBarVisible && sessionExist && " transition-all sm:ml-64"}`}>
+              <DashboardTopNavigationBar sideBarVisible={sideBarVisible} setSideBarVisible={setSideBarVisible} />
               <div className={`w-full  ${sideBarVisible && " max-sm:pointer-events-none"}`}>
                 <div className="h-[90vh] flex items-center flex-col overscroll-none">
                   {children}

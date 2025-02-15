@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import type { Viewport } from "next";
-import TopNavigationBar from "@/components/navigation/TopNavigationBar";
+import TopNavigationBar from "@/components/navigation/LandingTopNavigationBar";
 import "./globals.css";
 import { poppins, sf_pro } from "@/utils/fonts";
-import customTheme from "@/utils/customTheme";
 import { Flowbite } from "flowbite-react";
 import retrieve from "./lib/userInfoRetriever";
 import { useState } from "react";
@@ -27,16 +26,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${sf_pro.variable} ${poppins.variable} h-[92vh] overflow-hidden bg-gray-800 antialiased text-white`}>
-        
-        <Flowbite theme={{ theme: customTheme }}>
-          <TopNavigationBar userInfo ={await retrieve()}/>
 
-          {children}
-        </Flowbite>
+        {children}
 
       </body>
     </html>

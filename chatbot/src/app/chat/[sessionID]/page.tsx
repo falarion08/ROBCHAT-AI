@@ -14,7 +14,7 @@ export default function Page() {
     const router = useRouter()
     const pathname = usePathname();
 
-    const scrollDivRef = useRef<HTMLDivElement | null>(null);
+const scrollDivRef = useRef<HTMLDivElement | null>(null);
 
     const { setMessages, messages, setIsResponseLoading,
         isResponseLoading, sessionExist } = useContext(MessageRoomContext);

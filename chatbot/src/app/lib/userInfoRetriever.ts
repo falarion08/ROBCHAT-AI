@@ -9,6 +9,8 @@ export default async function retrieve(){
     const cookie = cookies().get('session')?.value; 
     const session = await decrypt(cookie); 
 
+    console.log("hello")
+
     if(session?.userID){
         
        const docRef =  doc(firestore,"Users", String(session?.userID));
