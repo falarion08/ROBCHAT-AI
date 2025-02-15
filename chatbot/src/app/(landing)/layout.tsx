@@ -1,5 +1,5 @@
 import TopNavigationBar from "@/components/navigation/LandingTopNavigationBar"
-import customTheme from "@/utils/customTheme"
+import {customTheme} from "@/utils/customTheme"
 import { Flowbite } from "flowbite-react"
 import retrieve from "../lib/userInfoRetriever"
 
