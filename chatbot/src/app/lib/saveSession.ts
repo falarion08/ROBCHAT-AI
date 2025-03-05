@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { decrypt } from "./session";
 import storeMessage from "./storeMessage";
-import { collection, addDoc } from "@firebase/firestore";
+import { collection, addDoc, Timestamp, serverTimestamp, FieldValue } from "@firebase/firestore";
 import { firestore } from "../../../dbconfig";
 import { redirect } from "next/navigation";
 
@@ -21,8 +21,11 @@ export default async function createChatSessionID(message: string, pathname: str
 
         
         const sessionRef = collection(firestore, `Users/${String(session?.userID)}/messageHistory/`);
+        const dateCreated= serverTimestamp();
+        
         const newSession = {
-            createdAt: Date.now(),
+            createdAt: dateCreated,
+            modifiedAt: dateCreated,
             summary: message
         }
         const sessionDocRef = await addDoc(sessionRef, newSession);

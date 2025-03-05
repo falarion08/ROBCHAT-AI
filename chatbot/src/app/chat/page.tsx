@@ -40,8 +40,9 @@ export default function Page() {
       scrollDownToBottom();
     }
     if (!sessionExist && isResponseLoading) {
-      getData(messages[messages.length - 1].userMessage)
+      getData(messages[messages.length - 1].userMessage);
     }
+
 
   }, [isResponseLoading]);
 

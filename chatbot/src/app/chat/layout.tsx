@@ -2,15 +2,14 @@
 
 import SideBar from "@/components/navigation/SideBarNavigation";
 import getBotResponse from "@/utils/getBotResponse";
-import { Message } from "@/utils/definitions";
-import { useEffect, useState } from "react";
+import { chatHistoryItem, Message } from "@/utils/definitions";
+import { useEffect, useRef, useState } from "react";
 import { MessageRoomContext } from "../Providers/messageRoomContext";
 import MessageThread from "@/components/MessageThread";
 import MessageBox from "@/components/MessageBox";
-import isSessionValid from "../lib/isSessionValid";
 import { usePathname } from "next/navigation";
 import DashboardTopNavigationBar from "@/components/navigation/DashboardTopNavBar";
-
+import retrieve from "../lib/userInfoRetriever";
 
 
 export default function Layout({
@@ -27,8 +26,8 @@ export default function Layout({
   const [isResponseLoading, setIsResponseLoading] = useState<boolean>(false);
   const [isMessageThreadEmpty, setIsMessageThreadEmpty] = useState<boolean>(true);
   const [sessionExist, setSessionExist] = useState<boolean>(true);
+  const [chatHistory, setChatHistory] = useState<chatHistoryItem[] | undefined>(undefined);
 
-  const pathname = usePathname();
   const handleResize = () => {
     if (window.innerWidth <= 640) {
       setSideBarVisible(false);
@@ -38,9 +37,13 @@ export default function Layout({
   useEffect(() => {
 
     async function examineSession() {
-      let sessionValid = await isSessionValid();
-      setSessionExist(sessionValid);
-
+      let data = await retrieve();
+      if (data) {
+        setChatHistory(data['chatHistory']);
+        setSessionExist(true);
+      }
+      else
+        setSessionExist(false)
     }
 
     setSideBarVisible(window.innerWidth <= 640 ? false : true);
@@ -58,15 +61,15 @@ export default function Layout({
           message, setMessage,
           isResponseLoading, setIsResponseLoading,
           isMessageThreadEmpty, setIsMessageThreadEmpty,
-          sessionExist
+          sessionExist, chatHistory, setChatHistory
         }}>
           <div className="relative">
-            {sessionExist && <SideBar sideBarVisible={sideBarVisible} setSideBarVisible={setSideBarVisible} />}
+            {sessionExist && <SideBar chatHistory={chatHistory} setChatHistory={setChatHistory} sideBarVisible={sideBarVisible} setSideBarVisible={setSideBarVisible} />}
             {sideBarVisible && <div onClick={() => setSideBarVisible(false)} className="max-sm:fixed max-sm:inset-0 max-sm:bg-black opac max-sm:opacity-30 max-sm:z-10 border  sm:hidden" />}
             <div className={`${sideBarVisible && sessionExist && " transition-all sm:ml-64"}`}>
               <DashboardTopNavigationBar sideBarVisible={sideBarVisible} setSideBarVisible={setSideBarVisible} />
               <div className={`w-full  ${sideBarVisible && " max-sm:pointer-events-none"}`}>
-                <div className="h-[90vh] flex items-center flex-col overscroll-none">
+                <div className="h-[90vh] flex items-center flex-col overscroll-none ">
                   {children}
                   <MessageBox />
                 </div>

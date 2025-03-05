@@ -56,7 +56,6 @@ export default function Page() {
       }
 
     } catch (e) {
-      console.log(e);
       setError(true);
       setIsLoading(false);
     }

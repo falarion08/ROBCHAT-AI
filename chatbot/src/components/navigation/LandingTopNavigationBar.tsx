@@ -12,8 +12,6 @@ import { useState } from "react";
 
 export default function TopNavigationBar(props: any) {
 
-    const info: SessionInfo = props?.userInfo;
-    const [openModal, setOpenModal] = useState<boolean>(false);
 
     return (
         <Navbar fluid rounded className="bg-transparent ">

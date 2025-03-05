@@ -10,21 +10,24 @@ interface PropsType {
   setOpenModal: Dispatch<SetStateAction<boolean>>;
 }
 
+const supportedLanguages: string[] = [
+  // Major Global Languages
+  "English", "Spanish", "French", "German", "Portuguese",
+  "Russian", "Chinese (Simplified)", "Chinese (Traditional)",
+  "Japanese", "Korean", "Italian", "Arabic",
+
+  // Regional & Lesser-Known Languages
+  "Hindi", "Bengali", "Urdu", "Tamil", "Telugu", "Marathi", "Punjabi",
+  "Turkish", "Persian", "Hebrew", "Greek",
+  "Dutch", "Polish", "Ukrainian", "Czech", "Hungarian",
+  "Swahili", "Afrikaans", "Hausa",
+  "Filipino (Tagalog)", "Vietnamese", "Thai", "Indonesian", "Malay",
+]
+
 export function SettingsModal(props: PropsType) {
   const [openModal, setOpenModal] = [props.openModal, props.setOpenModal];
-  const supportedLanguages: string[] = [
-    // Major Global Languages
-    "English", "Spanish", "French", "German", "Portuguese",
-    "Russian", "Chinese (Simplified)", "Chinese (Traditional)",
-    "Japanese", "Korean", "Italian", "Arabic",
+  const [preferredLanguage, setPreferredLanguage] = useState<string>(supportedLanguages[0]);
 
-    // Regional & Lesser-Known Languages
-    "Hindi", "Bengali", "Urdu", "Tamil", "Telugu", "Marathi", "Punjabi",
-    "Turkish", "Persian", "Hebrew", "Greek",
-    "Dutch", "Polish", "Ukrainian", "Czech", "Hungarian",
-    "Swahili", "Afrikaans", "Hausa",
-    "Filipino (Tagalog)", "Vietnamese", "Thai", "Indonesian", "Malay",
-  ]
   return (
     <>
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
@@ -34,14 +37,10 @@ export function SettingsModal(props: PropsType) {
 
             <div className="flex flex-col">
               <div className=" font-sfpro tracking-wider flex flex-row justify-between">
-                <p className=" flex items-center">AI Language</p>
-                <Select value={supportedLanguages[3]} id="countries" required>
-                  {
-                    supportedLanguages.map((l,i)=><option key={i}>{l}</option>)
-                  }
-
-
-                </Select>
+                <p className=" flex items-center ">AI Language</p>
+                <select id="countries" onChange={(e)=>setPreferredLanguage(e.target.value)} value={preferredLanguage} className="font-sfpro scrollbar text-sm rounded-lg block  p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
+                  {supportedLanguages.map((s,i)=><option key={i} value={s}>{s}</option>)}
+                </select>
               </div>
             </div>
 

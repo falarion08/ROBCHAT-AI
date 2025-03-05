@@ -1,3 +1,4 @@
+import  { FieldValue, Timestamp } from "@firebase/firestore";
 import {z} from "zod"
 
 export const RegistrationFormSchema = z.object({
@@ -36,4 +37,13 @@ export type SessionInfo = {
 export type Message = {
     userMessage:string,
     systemMessage?:string,
+    createdAt?: FieldValue
+}
+
+export type chatHistoryItem = {
+    id:String,
+    data: {
+        createdAt:Timestamp,
+        summary:string,
+    }
 }

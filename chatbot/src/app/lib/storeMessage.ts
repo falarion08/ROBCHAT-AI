@@ -1,13 +1,14 @@
 "use server";
 import { cookies } from "next/headers";
 import { decrypt } from "./session";
-import { addDoc, collection } from "@firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import { firestore } from "../../../dbconfig";
 import { Message } from "@/utils/definitions";
 
 export default async function storeMessage(message: string, system_response: string | undefined, sessionID:string) {
     const cookie = cookies().get('session')?.value;
     const session = await decrypt(cookie);
+    const dateCreated = serverTimestamp()
 
     if (session?.userID) {
 
@@ -17,7 +18,8 @@ export default async function storeMessage(message: string, system_response: str
         if (system_response) {
             newMessage = {
                 userMessage: message,
-                systemMessage: system_response
+                systemMessage: system_response,
+                createdAt:dateCreated,
             }
         }
         else {
@@ -27,4 +29,6 @@ export default async function storeMessage(message: string, system_response: str
         }
         await addDoc(messageRef, newMessage);
     }
+
+    return dateCreated;
 }

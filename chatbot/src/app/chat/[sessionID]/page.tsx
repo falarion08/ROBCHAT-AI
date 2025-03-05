@@ -57,6 +57,7 @@ const scrollDivRef = useRef<HTMLDivElement | null>(null);
             setIsChatBodyLoading(false);
             getData(messages[messages.length - 1].userMessage);
             scrollDownToBottom();
+            console.log("wassup")
         }
 
     }, [isResponseLoading]);
@@ -94,7 +95,7 @@ const scrollDivRef = useRef<HTMLDivElement | null>(null);
 
     if (!isChatBodyLoading)
         return (
-            <div ref={scrollDivRef} className=" w-[90%]  sm:h-screen h-[75%] py-5 overflow-y-scroll scroll-smooth flex flex-col space-y-5 mb-2 scrollbar">
+            <div ref={scrollDivRef} className="p-3 w-[90%] sm:h-screen h-[75%] py-5 overflow-y-scroll scroll-smooth flex flex-col space-y-5 mb-2 scrollbar">
                 {messages.map((m: Message, i: number) => (<MessageThread listID={i}
                     messageExchange={m} key={i} />))}
             </div>

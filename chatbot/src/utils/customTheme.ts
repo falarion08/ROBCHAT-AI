@@ -15,6 +15,7 @@ export const customTheme: CustomFlowbiteTheme = {
         regularTheme: "bg-[#087830] tracking-wide hover:bg-green-500 active:bg-[#087830] font-poppins font-semibold ",
       },
     },
+
   };
 
 export const dashboardTopNavBar: CustomFlowbiteTheme = {
