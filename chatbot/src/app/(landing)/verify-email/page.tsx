@@ -7,9 +7,21 @@ import { HiX } from "react-icons/hi";
 import { Alert } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
 import Link from 'next/link'
+import { DestructiveToast } from "@/components/ToastMessages";
 
 
 export default function Page() {
+
+
+  return (
+    <Suspense>
+      <PageComponent/>
+    </Suspense>
+  )
+}
+
+
+function PageComponent(){
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [verified, setVerified] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -19,7 +31,7 @@ export default function Page() {
   const verifyToken = searchParams.get('verifyToken');
   const userID = searchParams.get('id');
 
-  const initalized = useRef(false)
+  const initalized = useRef(false);
 
   useEffect(() => {
     if (!initalized.current) {
@@ -63,9 +75,7 @@ export default function Page() {
 
   if (isLoading) {
     return (
-      <Suspense>
-        <h1 className="flex justify-center items-center h-screen">Verifying Your Email. Please wait...</h1>
-      </Suspense>
+      <h1 className="flex justify-center items-center h-screen">Verifying Your Email. Please wait...</h1>
     )
   } else {
     return (
@@ -96,17 +106,4 @@ export default function Page() {
       </Suspense>
     )
   }
-
-}
-
-function DestructiveToast(props: any) {
-  return (
-    <Toast>
-      <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
-        <HiX className="h-5 w-5" />
-      </div>
-      <div className="ml-3 text-sm font-normal">{props.message}</div>
-      <Toast.Toggle />
-    </Toast>
-  )
 }
