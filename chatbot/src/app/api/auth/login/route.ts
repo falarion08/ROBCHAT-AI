@@ -26,7 +26,6 @@ export async function POST(request:Request){
         // Verify if the email exist in the database and check if the password is a match
         if(users.length == 1 && await bcrypt.compare(password,users[0].password)){
 
-            console.log("valid")
             await createSession(users[0].id);
             return NextResponse.json({message:"Success"},{status:200});
         }

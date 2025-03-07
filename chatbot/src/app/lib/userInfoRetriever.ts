@@ -22,7 +22,7 @@ export default async function retrieve(){
 
             let chatHistory:chatHistoryItem[] = [];
 
-            const chatHistoryQuery = query(collection(firestore,`Users/${String(session.userID)}/messageHistory`), orderBy('createdAt', "desc"),limit(15))
+            const chatHistoryQuery = query(collection(firestore,`Users/${String(session.userID)}/messageHistory`), orderBy('modifiedAt', "desc"),limit(15))
             const chatHistorySnapshot = await getDocs(chatHistoryQuery); 
 
             chatHistorySnapshot.forEach((doc)=>{

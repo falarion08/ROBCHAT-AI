@@ -2,7 +2,7 @@ import { decrypt } from "@/app/lib/session";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { firestore } from "../../../../../dbconfig";
-import { collection, doc, DocumentData, getDoc, getDocs, limit, orderBy, query } from "@firebase/firestore";
+import { collection, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, serverTimestamp, updateDoc } from "@firebase/firestore";
 import { Message } from "@/utils/definitions";
 import storeMessage from "@/app/lib/storeMessage";
 
@@ -41,10 +41,21 @@ export async function POST(request: Request, { params }: ParamsType){
     const { sessionID } = params;
 
     try{
-        let {userMessage, systemResponse} = await request.json()
+        let {userMessage, systemResponse} = await request.json();
+        const cookie = cookies().get('session')?.value;
+        const session = await decrypt(cookie);
 
-        let dateCreated = await storeMessage(userMessage, systemResponse,sessionID);
-        return NextResponse.json({dateCreated:dateCreated},{status:200});
+        if(session?.userID){
+            const messageHistoryRef = doc(firestore,`Users/${String(session.userID)}/messageHistory`,sessionID)
+            await updateDoc(messageHistoryRef,{
+                modifiedAt: serverTimestamp(),
+            });
+            let dateCreated = await storeMessage(userMessage, systemResponse,sessionID);
+            return NextResponse.json({dateCreated:dateCreated},{status:200});
+        }
+    
+
+
     } catch {
         return NextResponse.json({error:'Something went wrong'}, {status:200});
     }

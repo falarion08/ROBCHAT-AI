@@ -41,7 +41,7 @@ export type Message = {
 }
 
 export type chatHistoryItem = {
-    id:String,
+    id?:String,
     data: {
         createdAt:Timestamp,
         summary:string,

@@ -6,18 +6,17 @@ import { useContext, useEffect, useRef, useState } from "react";
 import MessageThread from "@/components/MessageThread";
 import getBotResponse from "@/utils/getBotResponse";
 import storeMessage from "@/app/lib/storeMessage";
+import { serverTimestamp } from "@firebase/firestore";
 
 
 export default function Page() {
-
-
-    const router = useRouter()
+    const router = useRouter();
     const pathname = usePathname();
 
-const scrollDivRef = useRef<HTMLDivElement | null>(null);
+    const scrollDivRef = useRef<HTMLDivElement | null>(null);
 
     const { setMessages, messages, setIsResponseLoading,
-        isResponseLoading, sessionExist } = useContext(MessageRoomContext);
+        isResponseLoading, sessionExist,chatHistory, setChatHistory } = useContext(MessageRoomContext);
 
     const [isChatBodyLoading, setIsChatBodyLoading] = useState<boolean>(false);
 
@@ -29,7 +28,15 @@ const scrollDivRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const getData = async (message: string) => {
-            const response = await getBotResponse(message)
+
+            if(messages.length == 1)
+                setChatHistory([ {
+                    data:{summary:message},
+                    createdAt: Date.now()
+            }, ...chatHistory])
+
+
+            const response = await getBotResponse(message);
 
             let newMessages: Message[] = messages.map((m: Message, i: number) => {
                 if (i == messages.length - 1)
@@ -57,7 +64,7 @@ const scrollDivRef = useRef<HTMLDivElement | null>(null);
             setIsChatBodyLoading(false);
             getData(messages[messages.length - 1].userMessage);
             scrollDownToBottom();
-            console.log("wassup")
+
         }
 
     }, [isResponseLoading]);
@@ -81,9 +88,9 @@ const scrollDivRef = useRef<HTMLDivElement | null>(null);
                 let data = await response.json();
                 setMessages(data['data']);
                 setIsChatBodyLoading(false);
-                setTimeout(()=>{scrollDownToBottom()},3000)
+                setTimeout(() => { scrollDownToBottom() }, 3000)
             } else router.replace('/chat');
-            
+
 
         }
         if (!isResponseLoading) {

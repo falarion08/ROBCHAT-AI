@@ -50,6 +50,11 @@ export default function Layout({
     setIsMainBodyingLoading(false);
     window.addEventListener("resize", handleResize);
     examineSession();
+    
+    // Clean up function
+    return ()=>{
+      window.removeEventListener("resize",handleResize)
+    }
   }, []);
 
   if (!isMainBodyLoading)
