@@ -1,5 +1,7 @@
 
 "use server";
+export const maxDuration = 60 // Max duration for GET or POST request is 60 seconds
+
 export default async function getBotResponse(message:string){
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",

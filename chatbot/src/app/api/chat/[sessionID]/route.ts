@@ -6,6 +6,8 @@ import { collection, doc, DocumentData, getDoc, getDocs, limit, orderBy, query, 
 import { Message } from "@/utils/definitions";
 import storeMessage from "@/app/lib/storeMessage";
 
+export const maxDuration = 60 // Max duration for GET or POST request is 60 seconds
+
 interface ParamsType {
     params: { sessionID: string }
 }
