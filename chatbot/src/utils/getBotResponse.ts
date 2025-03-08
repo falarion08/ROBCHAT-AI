@@ -1,5 +1,5 @@
 
-"use server";
+// "use server";
 export const maxDuration = 60 // Max duration for GET or POST request is 60 seconds
 
 export default async function getBotResponse(message:string){
