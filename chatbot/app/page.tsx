@@ -74,7 +74,7 @@ function Home() {
     {
       icon: Brain,
       title: "Context Memory",
-      description: "Nova remembers your preferences and past conversations for personalized responses.",
+      description: "ROBCHAT AI remembers your preferences and past conversations for personalized responses.",
     },
     {
       icon: Sparkles,
